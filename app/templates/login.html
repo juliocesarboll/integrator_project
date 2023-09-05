@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta  charset=utf-8>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+/* O segundo <meta> é para permitir caracteres acentuados*/
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Estilo para todos os botões */
+button {
+  background-color: #0095ac;
+  color: white;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Botão para cancelar */
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+/* Centraliza a imagem */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+img.logo {
+  width: 40%;
+}
+/* "Bordas" */
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* The Modal (background) */
+.modal {
+  display: block; /* default se torna visivel */
+  position: fixed;
+  z-index: 1; /* layers */
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; /* se for muito grande para a tela ativa o scroll */
+  background-color: rgb(0,0,0); /* caso o pc não consiga fazer opacidade */
+  background-color: rgba(0,0,0,0.4); /* caso o pc consiga opacidade */
+  padding-top: 30px; /* distancia do topo da página*/
+}
+
+/* conteudo que sobrepõe a "página anterior" */
+.modal-content {
+  background-color: #fefefe;
+  margin: 1% auto 5% auto; /* 1% do topo, 5% do fundo, automatico centralizado */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Botão X */
+.close {
+  position: absolute;
+  right: 25px;
+  top: 0;
+  color: #000;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: red;
+  cursor: pointer;
+}
+
+/* zomzinho */
+.animate {
+  animation: animatezoom 0.5s;
+}
+  
+@keyframes animatezoom {
+  from {transform: scale(0)} 
+  to {transform: scale(1)}
+}
+
+/* Change styles for span and cancel button on extra small screens // can't test this, discuss later... */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+/*talvez seja necessario colocar uma action no <form>??... it's not... a imagem precisa ser usada no formato apresentado*/
+</style>
+</head>
+<body>
+<title>Página de Login</title>
+
+<div id="id01" class="modal">
+  
+  <form class="modal-content animate" method="POST">
+    <div class="imgcontainer">
+      <span onclick="T()" class="close" title="Close Modal">&times;</span>
+      <img id= 'logo' src="/static/logo.png" alt="Logo" class="logo">
+    </div>
+
+    <div class="container">
+      <label for="uname"><b>Usuário:</b></label>
+      <input type="text" placeholder="Nome do usuário" name="uname" required>
+
+      <label for="psw"><b>Senha:</b></label>
+      <input type="password" placeholder="Senha do usuário" name="psw" required>
+        
+      <button type="submit">Login</button>
+      <label>
+      <input type="checkbox" checked="checked" name="remember"> Lembrar-me
+      </label>
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="T()" class="cancelbtn">Cancelar</button>
+    </div>
+  </form>
+</div>
+
+<script>
+// get modal
+var modal = document.getElementById('id01');
+
+// Fechar caso clique fora da caixa
+window.onclick = function(event) {
+    if (event.target == modal) {
+        T();
+    }
+}
+// Função fechar, as vezes não fecha por razões além da minha compreensão...
+function T() {
+    modal.style.display='none';
+    
+    var t=setTimeout('self.close()',200);
+}
+</script>
+
+</body>
+</html>
