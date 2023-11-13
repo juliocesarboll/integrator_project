@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;1,600&family=Roboto&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style-type: none;
+    box-sizing: border-box;
+}
+#sidebar-toggle{
+    display: none;
+
+}
+
+.sidebar{
+    height: 100%;
+    width: 240px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    background: #236fcce6;
+    color: #fff;
+    overflow-y: auto;
+    transition: width 500ms
+}
+.sidebar-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0rem 1rem;
+}
+.sidebar-menu{
+    padding: 1rem;
+    
+}
+.sidebar li{
+    margin-bottom: 1.2rem;
+}
+.sidebar a{
+    color: #fff;
+    font-size: .9rem;
+}
+.sidebar li a{
+    color: #fff;
+    font-size:.9rem;
+}
+.sidebar-menu li:hover{
+    background-color: #0b5bbce6 ;
+    border-radius: 4px 4px
+    
+
+}
+.sidebar a span{
+    padding-left: .6rem;
+} 
+
+
+#sidebar-toggle:checked ~ .sidebar{
+    width: 60px;
+}
+#sidebar-toggle:checked ~ .sidebar .sidebar-header h3 span, #sidebar-toggle:checked ~ .sidebar li span:last-child  {
+   display: none;
+}
+#sidebar-toggle:checked ~ .sidebar .sidebar-header, #sidebar-toggle:checked ~ .sidebar li{
+    display: flex;
+    justify-content: center;
+}
+#sidebar-toggle:checked ~ .main-content{
+    margin-left: 60px;
+}
+#sidebar-toggle:checked ~ .main-content header{
+    left: 60px;
+}
+.main-content {
+   position: relative;
+   margin-left: 240px;
+   transition: margin-left 500ms;
+}
+header {
+    position: fixed;
+    left: 240px;
+    top: 0;
+    z-index: 100;
+    width: calc(100% - 240px);
+    height: 60px;
+    padding: 0rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 4px solid var(#ccc);
+    transition: left 500ms;
+
+}
+.search-wrapper{
+    display :flex;
+    align-items: center;
+    box-shadow: 2px 2px 2px #ccc;
+}
+.search-wrapper input {
+    border: none;
+    outline: none;
+    padding: 10px 36px 10px 16px;
+    height: 38px;
+    width: 100%;
+    
+}
+main{
+    margin-top: 60px;
+    background: #f1f5f9;
+    min-height: 90vh;
+    padding: 1rem;
+}
+.box-info{
+    width: 35%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    background-color: #236fcce6;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 2px 2px 2px #ccc
+    
+    
+}
+.box-info-single{
+    color:#fff;  
+}
+.feed{
+    background-color: rgb(183, 42, 42);
+    width: 50%;
+    height: 50%;
+    padding: 120px;
+    margin-top: 50px;
+    
+
+}
+.chartdiv{
+    display: flex;
+    
+}
+
+
+
+
+
