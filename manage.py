@@ -40,14 +40,14 @@ def exit():
 @app.route('/search-caixa/<palavra_chave>')
 def searchCaixa(palavra_chave):
    dados = request.get_json()
-   search(palavra_chave)
+   resultados = search(palavra_chave)
 
-   return render_template('home.html', valorCaixa = len(caixas))
+   return render_template('home.html', valorCaixa = len(caixas), resultado = resultados)
 
 def search(palavra_chave):
    resultados = [caixa.__dict__ for caixa in caixas if palavra_chave.lower() in caixa.descricao.lower()]
 
-   return render_template('home.html', valorCaixa = len(caixas), resultado = resultados)
+   return resultados
 
 if __name__ == "__main__":
    app.run(host='0.0.0.0')
