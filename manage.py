@@ -20,7 +20,6 @@ def toHome():
 
 @app.route('/home')
 def home():
-   populaCaixa()
    return render_template('home.html', valorCaixa = len(caixas))
 
 @app.route('/cadastro')
