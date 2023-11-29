@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro de Caixas</title>
+    <link rel="stylesheet" href="../static/fontawesome/css/all.min.css" />
+
+    <style>
+      * {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        list-style-type: none;
+        box-sizing: border-box;
+      }
+      #sidebar-toggle {
+        display: none;
+      }
+
+      .sidebar {
+        height: 100%;
+        width: 240px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 100;
+        background: #236fcce6;
+        color: #fff;
+        overflow-y: auto;
+        transition: width 500ms;
+      }
+      .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;
+        padding: 0rem 1rem;
+      }
+      .sidebar-menu {
+        padding: 1rem;
+      }
+      .sidebar li {
+        margin-bottom: 1.2rem;
+      }
+      .sidebar a {
+        color: #fff;
+        font-size: 0.9rem;
+      }
+      .sidebar li a {
+        color: #fff;
+        font-size: 0.9rem;
+      }
+      .sidebar-menu li:hover {
+        background-color: #0b5bbce6;
+        border-radius: 4px 4px;
+      }
+      .sidebar a span {
+        padding-left: 0.6rem;
+      }
+
+      #sidebar-toggle:checked ~ .sidebar {
+        width: 60px;
+      }
+      #sidebar-toggle:checked ~ .sidebar .sidebar-header h3 span,
+      #sidebar-toggle:checked ~ .sidebar li span:last-child {
+        display: none;
+      }
+      #sidebar-toggle:checked ~ .sidebar .sidebar-header,
+      #sidebar-toggle:checked ~ .sidebar li {
+        display: flex;
+        justify-content: center;
+      }
+      #sidebar-toggle:checked ~ .main-content {
+        margin-left: 60px;
+      }
+      #sidebar-toggle:checked ~ .main-content header {
+        left: 60px;
+      }
+      #sidebar-toggle:checked main {
+        margin-left: 260px;
+      }
+
+      main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .main-content {
+        width: 50px;
+      }
+      .content {
+        align-items: center;
+      }
+      #cadastroForm {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      #cadastroForm div {
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+  <body>
+    <!--Menu Lateral-->
+    <header>
+      <input type="checkbox" id="sidebar-toggle" />
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h3 class="brand">
+            <span class="ti-unlink"></span>
+            <span>Taugor</span>
+          </h3>
+          <label for="sidebar-toggle"> <i class="fa-solid fa-bars"></i></label>
+        </div>
+
+        <div class="sidebar-menu">
+          <ul>
+            <li>
+              <a href="/home">
+                <form action="home" method="get">
+                  <span><i class="fa-solid fa-house"></i></span>
+                  <span>Home</span>
+                </form>
+              </a>
+            </li>
+
+            <li>
+              <a href="/cadastro-caixas">
+                <form action="cadastro-caixas" method="get">
+                  <span> <i class="fa-solid fa-box"></i></span>
+                  <span>Cadastro de Caixas</span>
+                </form>
+              </a>
+            </li>
+            <li>
+              <a href="/exit">
+                <form action="exit" method="get">
+                  <span><i class="fa-solid fa-right-from-bracket"></i></span>
+                  <span>Sair</span>
+                </form>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--Menu Lateral-->
+    </header>
+
+    <main id="main">
+      <div class="content">
+        <div class="titulo-secao">
+          <h2>Cadastro de Caixas</h2>
+          <br />
+        </div>
+        <form id="cadastroForm">
+          <div>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required />
+          </div>
+          <div>
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" required />
+          </div>
+          <div>
+            <label for="valor">Valor:</label>
+            <input type="text" id="valor" name="valor" required />
+          </div>
+          <button type="button" onclick="cadastrarCaixa()">
+            Cadastrar Caixa
+          </button>
+        </form>
+      </div>
+    </main>
+    <script>
+      function cadastrarCaixa() {
+        var nome = document.getElementById("nome").value;
+        var descricao = document.getElementById("descricao").value;
+        var valor = document.getElementById("valor").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/cadastro", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        var data = JSON.stringify({
+          nome: nome,
+          descricao: descricao,
+          valor: valor,
+        });
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log("Caixa cadastrada com sucesso!");
+          } else {
+            console.error("Erro no cadastro da caixa: " + xhr.status);
+          }
+        };
+
+        xhr.send(data);
+      }
+      document
+        .getElementById("sidebar-toggle")
+        .addEventListener("change", function (event) {
+          const mainElement = document.getElementById("main");
+          const checked = event.target.checked;
+
+          if (checked === false) {
+            mainElement.style.marginLeft = "260px";
+          } else {
+            mainElement.style.marginLeft = "0";
+          }
+        });
+    </script>
+  </body>
+</html>
