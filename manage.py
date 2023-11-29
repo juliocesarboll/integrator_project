@@ -1,85 +1,61 @@
-from app import app, db
+from app import app
 from app.models import Equipamento
-from flask import jsonify, request, render_template
+from flask import request, render_template, jsonify
 
+class Caixa:
+   def __init__(self, nome, descricao, valor):
+      self.nome = nome
+      self.descricao = descricao
+      self.valor = valor
+
+caixas = []
 
 @app.route('/')
-@app.route('/index')
-def hello():
-   return render_template('home.html')
+def login():
+   return render_template('login.html')
 
-# @app.route('/equipamentos', methods=['GET'])
-# def get_equipamentos():
-#     equipamentos = Equipamento.query.all()
-#     output = []
+@app.route('/', methods=['POST'])
+def toHome():
+   return render_template('home.html', valorCaixa = len(caixas))
 
-#     for equipamento in equipamentos:
-#         equipamento_data = {
-#             'id': equipamento.id,
-#             'nome': equipamento.nome,
-#             'descricao': equipamento.descricao,
-#             'preco': equipamento.preco
-#         }
-#         output.append(equipamento_data)
+@app.route('/home')
+def home():
+   return render_template('home.html', valorCaixa = len(caixas))
 
-#     return jsonify({'equipamentos': output})
+@app.route('/cadastro')
+def cadastrarCaixa():
+   caixa1 = Caixa(request.args.get('nome', ''), request.args.get('descricao', ''), request.args.get('valor', ''))
+   caixas.append(caixa1)
 
+   return jsonify({"data": "success"})
 
-# @app.route('/equipamentos/<int:id>', methods=['GET'])
-# def get_equipamento(id):
-#     equipamento = Equipamento.query.get(id)
+@app.route('/cadastra-caixa')
+def cadastroCaixa():
+   return render_template('cadastro.html')
 
-#     if equipamento:
-#         equipamento_data = {
-#             'id': equipamento.id,
-#             'nome': equipamento.nome,
-#             'descricao': equipamento.descricao,
-#             'preco': equipamento.preco
-#         }
-#         return jsonify(equipamento_data)
+@app.route('/exit')
+def exit():
+   return render_template('login.html')
 
-#     return jsonify({'message': 'Equipamento não encontrado'}), 404
+@app.route('/search-caixa')
+def searchCaixa():
+   descricao = request.args.get('descricao', '')
+   resultados = search(descricao)
 
+   return resultados
 
-# @app.route('/equipamentos', methods=['POST'])
-# def create_equipamento():
-#     data = request.get_json()
+def populaCaixa():
+   caixa = []
+   for x in range(1,5):
+      caixas.append(Caixa("Caixa {x}", "Caixote", 12.99))
 
-#     equipamento = Equipamento(data['nome'], data['descricao'], data['preco'])
-#     db.session.add(equipamento)
-#     db.session.commit()
+   for x in range(1,5):
+      caixas.append(Caixa("Caixa {x}", "Degrau", 10.99))
 
-#     return jsonify({'message': 'Equipamento criado com sucesso'}), 201
+def search(palavra_chave):
+   resultados = [caixa.__dict__ for caixa in caixas if palavra_chave.lower() in caixa.descricao.lower()]
 
-
-# @app.route('/equipamentos/<int:id>', methods=['PUT'])
-# def update_equipamento(id):
-#     equipamento = Equipamento.query.get(id)
-
-#     if equipamento:
-#         data = request.get_json()
-#         equipamento.nome = data['nome']
-#         equipamento.descricao = data['descricao']
-#         equipamento.preco = data['preco']
-
-#         db.session.commit()
-
-#         return jsonify({'message': 'Equipamento atualizado com sucesso'})
-
-#     return jsonify({'message': 'Equipamento não encontrado'}), 404
-
-
-# @app.route('/equipamentos/<int:id>', methods=['DELETE'])
-# def delete_equipamento(id):
-#     equipamento = Equipamento.query.get(id)
-
-#     if equipamento:
-#         db.session.delete(equipamento)
-#         db.session.commit()
-
-#         return jsonify({'message': 'Equipamento excluído com sucesso'})
-
-#     return jsonify({'message': 'Equipamento não encontrado'}), 404
+   return resultados
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+   app.run(host='0.0.0.0')

@@ -3,13 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PageMain2</title>
-    <link rel="stylesheet" href="fontawesome/css/all.min.css">
-     <link rel="stylesheet" href="style2.css">
+    <title>Home</title>
+    <link rel="stylesheet" href="../static/fontawesome/css/all.min.css">
+     <link rel="stylesheet" href="../static/style2.css">
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+     <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
+    <script>
+        function search(callback) {
+            var searchTerm = document.getElementById("searchInput").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/search-caixa?descricao=" + encodeURIComponent(searchTerm), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var resposta = JSON.parse(xhr.responseText);
+                    callback(resposta)
+                } else {
+                    console.error("Erro na solicitação: " + xhr.status);
+                }
+            };
+            xhr.send();
+        }
+
+        function criaLista(lista){
+            var tabelaContainer = document.getElementById('result');
+            var tabela = document.createElement('table');
+            tabela.classList.add('tabela-caixas');
+
+            var cabecalho = document.createElement('thead');
+            var cabecalhoLinha = document.createElement('tr');
+
+            var cabecalhoNome = document.createElement('th');
+            cabecalhoNome.textContent = 'Nome';
+
+            var cabecalhoDescricao = document.createElement('th');
+            cabecalhoDescricao.textContent = 'Descrição';
+
+            var cabecalhoValor = document.createElement('th');
+            cabecalhoValor.textContent = 'Valor';
+
+            cabecalhoLinha.appendChild(cabecalhoNome);
+            cabecalhoLinha.appendChild(cabecalhoDescricao);
+            cabecalhoLinha.appendChild(cabecalhoValor);
+            cabecalho.appendChild(cabecalhoLinha);
+            tabela.appendChild(cabecalho);
+
+            var corpoTabela = document.createElement('tbody');
+            lista.forEach(function (caixa) {
+                var linha = document.createElement('tr');
+
+                var celulaNome = document.createElement('td');
+                celulaNome.textContent = caixa.nome;
+
+                var celulaDescricao = document.createElement('td');
+                celulaDescricao.textContent = caixa.descricao;
+
+                var celulaValor = document.createElement('td');
+                celulaValor.textContent = caixa.valor;
+
+                linha.appendChild(celulaNome);
+                linha.appendChild(celulaDescricao);
+                linha.appendChild(celulaValor);
+                corpoTabela.appendChild(linha);
+            });
+
+            tabela.appendChild(corpoTabela);
+            tabelaContainer.appendChild(tabela);
+        }
+    </script>
+    <!--Menu Lateral-->   
       <input type="checkbox" id="sidebar-toggle">
          <div class="sidebar">
              <div class="sidebar-header">
@@ -19,44 +98,52 @@
             </h3>
             <label for="sidebar-toggle" class=> <i class="fa-solid fa-bars"></i></label>
         </div>
-             
+            
         <div class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="">
+                    <a href="/home">
+                        <form action="home" method="get">
                         <span class=><i class="fa-solid fa-house"></i></span>
                         <span>Home</span>
+                    </form>
                     </a>
                 </li>
+               
                 <li>
-                    <a href="">
-                        <span class=><i class="fa-solid fa-user"></i></span>
-                        <span>Perfil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
+                    
+                    <a href="/cadastra-caixa">
+                        <form action="cadastra-caixa" method="get">
                         <span class=> <i class="fa-solid fa-box"></i></span>
                         <span>Cadastro de Caixas</span>
+                    </form>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    
+                    <a href="/exit">
+                        <form action="exit" method="get">
                         <span class=><i class="fa-solid fa-right-from-bracket"></i></span>
                         <span>Sair</span>
+                    </form>
                     </a>
+                
                 </li>
                
             </ul>
         </div>
-
+        <!--Menu Lateral--> 
+          
         </div>
         <div class="main-content">
             <header>
+                <form id="searchForm">
                 <div class="search-wrapper">
                     <span class=><i class="fa-solid fa-magnifying-glass"></i></span>
-                    <input type="search" placeholder="Search">
+                    <input id="searchInput" type="text" placeholder="Search">
+                    <button type="button" onclick="search(criaLista)">Search</button>
                 </div>
+            </form>
             </header>
             <main>
                 <div class="content">
@@ -67,40 +154,16 @@
                 </div>
                 <div class="box-info">
                     <div class="box-info-single">
-                    <div class="info-text">
+                        <div class="info-text">
                           <h3>Quantidade de Caixas</h3>
-                          <p>132</p>
+                          <p>{{ valorCaixa }}</p>
                         </div>
                         <i class="fa-solid fa-box-open"></i>
+                    </div>
                 </div>
-            </div>
-           <!--<canvas class="Bar-chart"></canvas>
-            <script>
-                var ctx = document.getElementsByClassName("Bar-chart")
-                 
-                var chartGraph = new Chart(ctx,{
-                      type: 'Bar'
-                      data: {
-                        label:["Jan", "Fev","Mar","Abr", "Mai", "Jun", "JUl", "Ago", "Set", "Out","Nov", "Dez"],
-                        datasets: [{
-                            label:"Quantidades de caixas por mês",
-                            data: [15,10,25,14,35,12,26,16,26,22,34,7]
-                            borderWidth: 6,
-                        }]
-                      }
-                }
-                );
-            </script> --> 
                 
-        
-    </main> 
+                <div id="result"></div>
+            </main>
         </div>
-    
-
-
-
-    
-    
-    
-</body>
+    </body>
 </html>
