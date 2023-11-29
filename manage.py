@@ -1,6 +1,6 @@
 from app import app
 from app.models import Equipamento
-from flask import request, render_template
+from flask import request, render_template, jsonify
 
 class Caixa:
    def __init__(self, nome, descricao, valor):
@@ -23,12 +23,12 @@ def home():
    populaCaixa()
    return render_template('home.html', valorCaixa = len(caixas))
 
-@app.route('/cadastro', methods=['POST'])
+@app.route('/cadastro')
 def cadastrarCaixa():
-   caixa1 = Caixa(request.form['name'], request.form['descricao'], request.form['valor'])
+   caixa1 = Caixa(request.args.get('name', ''), request.args.get('descricao', ''), request.args.get('valor', ''))
    caixas.append(caixa1)
 
-   return render_template('home.html', valorCaixa = len(caixas))
+   return jsonify({"data": "success"})
 
 @app.route('/cadastra-caixa')
 def cadastroCaixa():
