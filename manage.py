@@ -20,16 +20,17 @@ def toHome():
 
 @app.route('/home')
 def home():
+   populaCaixa()
    return render_template('home.html', valorCaixa = len(caixas))
 
-@app.route('/cadastrar-caixa')
+@app.route('/cadastro', methods=['POST'])
 def cadastrarCaixa():
    caixa1 = Caixa(request.form['name'], request.form['descricao'], request.form['valor'])
-   caixas.extend(caixa1)
+   caixas.append(caixa1)
 
    return render_template('home.html', valorCaixa = len(caixas))
 
-@app.route('/cadastro-caixa')
+@app.route('/cadastra-caixa')
 def cadastroCaixa():
    return render_template('cadastro.html')
 
@@ -37,12 +38,20 @@ def cadastroCaixa():
 def exit():
    return render_template('login.html')
 
-@app.route('/search-caixa/<palavra_chave>')
-def searchCaixa(palavra_chave):
-   dados = request.get_json()
-   resultados = search(palavra_chave)
+@app.route('/search-caixa')
+def searchCaixa():
+   descricao = request.args.get('descricao', '')
+   resultados = search(descricao)
 
-   return render_template('home.html', valorCaixa = len(caixas), resultado = resultados)
+   return resultados
+
+def populaCaixa():
+   caixa = []
+   for x in range(1,5):
+      caixas.append(Caixa("Caixa {x}", "Caixote", 12.99))
+
+   for x in range(1,5):
+      caixas.append(Caixa("Caixa {x}", "Degrau", 10.99))
 
 def search(palavra_chave):
    resultados = [caixa.__dict__ for caixa in caixas if palavra_chave.lower() in caixa.descricao.lower()]

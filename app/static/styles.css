@@ -1,0 +1,44 @@
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    #boxContainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: #3498db;
+      margin: 10px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      font-weight: bold;
+    }
+
+    #addBoxInput {
+      margin-bottom: 10px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+p,h6 {
+margin: auto; 
+align-items: center;
+}

@@ -3,13 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PageMain2</title>
+    <title>Home</title>
     <link rel="stylesheet" href="../static/fontawesome/css/all.min.css">
      <link rel="stylesheet" href="../static/style2.css">
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
 </head>
 <body>
+    <script>
+        function search(callback) {
+            var searchTerm = document.getElementById("searchInput").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/search-caixa?descricao=" + encodeURIComponent(searchTerm), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var resposta = JSON.parse(xhr.responseText);
+                    callback(resposta)
+                } else {
+                    console.error("Erro na solicitação: " + xhr.status);
+                }
+            };
+            xhr.send();
+        }
+
+        function criaLista(lista){
+            var ul = document.createElement("ul");
+            for (var i = 0; i < lista.length; i++){
+                var table = document.createElement("table");
+                var p = document.createElement("p");
+                p.appendChild(document.createTextNode(lista[i].nome));
+            }
+
+            var divResult = document.getElementById("result");
+            divResult.appendChild(ul)
+        }
+    </script>
     <!--Menu Lateral-->   
       <input type="checkbox" id="sidebar-toggle">
          <div class="sidebar">
@@ -34,8 +62,8 @@
                
                 <li>
                     
-                    <a href="/cadastro-caixas">
-                        <form action="cadastro-caixas" method="get">
+                    <a href="/cadastra-caixa">
+                        <form action="cadastra-caixa" method="get">
                         <span class=> <i class="fa-solid fa-box"></i></span>
                         <span>Cadastro de Caixas</span>
                     </form>
@@ -59,10 +87,11 @@
         </div>
         <div class="main-content">
             <header>
-                <form action="search-dashboard" method="get">
+                <form id="searchForm">
                 <div class="search-wrapper">
                     <span class=><i class="fa-solid fa-magnifying-glass"></i></span>
-                    <input type="search" placeholder="Search">
+                    <input id="searchInput" type="text" placeholder="Search">
+                    <button type="button" onclick="search(criaLista)">Search</button>
                 </div>
             </form>
             </header>
@@ -75,12 +104,16 @@
                 </div>
                 <div class="box-info">
                     <div class="box-info-single">
-                    <div class="info-text">
+                        <div class="info-text">
                           <h3>Quantidade de Caixas</h3>
                           <p>{{ valorCaixa }}</p>
                         </div>
                         <i class="fa-solid fa-box-open"></i>
+                    </div>
                 </div>
-            </div> 
-</body>
+                
+                <div id="result"></div>
+            </main>
+        </div>
+    </body>
 </html>
