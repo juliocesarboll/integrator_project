@@ -7,7 +7,23 @@
     <link rel="stylesheet" href="../static/fontawesome/css/all.min.css">
      <link rel="stylesheet" href="../static/style2.css">
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+     <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
     <script>
@@ -27,15 +43,49 @@
         }
 
         function criaLista(lista){
-            var ul = document.createElement("ul");
-            for (var i = 0; i < lista.length; i++){
-                var table = document.createElement("table");
-                var p = document.createElement("p");
-                p.appendChild(document.createTextNode(lista[i].nome));
-            }
+            var tabelaContainer = document.getElementById('result');
+            var tabela = document.createElement('table');
+            tabela.classList.add('tabela-caixas');
 
-            var divResult = document.getElementById("result");
-            divResult.appendChild(ul)
+            var cabecalho = document.createElement('thead');
+            var cabecalhoLinha = document.createElement('tr');
+
+            var cabecalhoNome = document.createElement('th');
+            cabecalhoNome.textContent = 'Nome';
+
+            var cabecalhoDescricao = document.createElement('th');
+            cabecalhoDescricao.textContent = 'Descrição';
+
+            var cabecalhoValor = document.createElement('th');
+            cabecalhoValor.textContent = 'Valor';
+
+            cabecalhoLinha.appendChild(cabecalhoNome);
+            cabecalhoLinha.appendChild(cabecalhoDescricao);
+            cabecalhoLinha.appendChild(cabecalhoValor);
+            cabecalho.appendChild(cabecalhoLinha);
+            tabela.appendChild(cabecalho);
+
+            var corpoTabela = document.createElement('tbody');
+            lista.forEach(function (caixa) {
+                var linha = document.createElement('tr');
+
+                var celulaNome = document.createElement('td');
+                celulaNome.textContent = caixa.nome;
+
+                var celulaDescricao = document.createElement('td');
+                celulaDescricao.textContent = caixa.descricao;
+
+                var celulaValor = document.createElement('td');
+                celulaValor.textContent = caixa.valor;
+
+                linha.appendChild(celulaNome);
+                linha.appendChild(celulaDescricao);
+                linha.appendChild(celulaValor);
+                corpoTabela.appendChild(linha);
+            });
+
+            tabela.appendChild(corpoTabela);
+            tabelaContainer.appendChild(tabela);
         }
     </script>
     <!--Menu Lateral-->   

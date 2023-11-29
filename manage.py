@@ -25,7 +25,7 @@ def home():
 
 @app.route('/cadastro')
 def cadastrarCaixa():
-   caixa1 = Caixa(request.args.get('name', ''), request.args.get('descricao', ''), request.args.get('valor', ''))
+   caixa1 = Caixa(request.args.get('nome', ''), request.args.get('descricao', ''), request.args.get('valor', ''))
    caixas.append(caixa1)
 
    return jsonify({"data": "success"})
